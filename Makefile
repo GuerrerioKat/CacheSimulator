@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -g -Wall -std=c++17
+CXXFLAGS = -g -Wall -Wextra -pedantic -std=c++17
 
 CXX_SRCS = csim.cpp csim_tests.cpp
 CXX_OBJS = $(CXX_SRCS:.cpp=.o)
@@ -16,7 +16,7 @@ csim : $(CXX_OBJS)
 .PHONY: solution.zip
 solution.zip :
 	rm -f $@
-	zip -9r $@ *.c *.cpp *.h README.txt
+	zip -9r $@ *.cpp *.h README.txt Makefile
 
 clean :
 	rm -f bigint_tests *.o
