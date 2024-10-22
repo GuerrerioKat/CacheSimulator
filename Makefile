@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -g -Wall -Wextra -pedantic -std=c++17
 
-CXX_SRCS = csim.cpp csim_tests.cpp
+CXX_SRCS = csim.cpp
 CXX_OBJS = $(CXX_SRCS:.cpp=.o)
 
 %.o : %.cpp
@@ -19,4 +19,4 @@ solution.zip :
 	zip -9r $@ *.cpp *.h README.txt Makefile
 
 clean :
-	rm -f bigint_tests *.o
+	rm -f csim *.o
