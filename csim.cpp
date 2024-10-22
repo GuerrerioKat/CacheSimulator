@@ -19,16 +19,21 @@ struct Cache {
     std::vector<Set> sets;
 };
 
-bool set_append(Slot newSlot) {
-    
+bool set_append(std::vector<Slot> set, Slot newSlot, uint32_t num_blocks, std::string eviction_type) {
+    if(set.size() < num_blocks && newSlot.valid) {
+        set.insert(set.begin(), newSlot);
+    } else {
+        evict_block(set, eviction_type);
+    }
+    return true;
 }
 
-void evict_block() {
-    
-}
-
-bool create_slot(uint32_t tag, uint32_t load_ts, uint32_t access_ts) {
-
+void evict_block(std::vector<Slot> set, std::string eviction_type) {
+    if(eviction_type.compare("lru") == 0) { // not too sure how passing in eviction type into console is going to work
+        set.pop_back(); // remove last element aka least used since we're adding to beginning
+    } else {
+        // fifo
+    }
 }
 
 int main(int argc, char **argv) {
@@ -79,7 +84,7 @@ int main(int argc, char **argv) {
     Cache cache;
     for (int i = 0; i < num_sets; i++) {
         Set set;
-        for (int j = 0; j < num_slots; j++) {
+        for (int j = 0; j < num_blocks; j++) {
             Slot slot;
             set.slots.push_back(slot);
         }
@@ -104,16 +109,16 @@ int main(int argc, char **argv) {
         //pulling the slot
         Set set = cache.sets[index];
         Slot found = null;
-        for (for (std::vector<Slot>::iterator it = set.begin(); it != set.end(); ++it)) {
-            if (it->tag == tag) {
+        for (std::vector<Slot>::iterator it = set.begin(); it != set.end(); ++it) {
+            if (it->tag.equals(tag)) {
                 found = (*it);
             }
         }
-
         if (status == 'l') { //conditional statments for load
             if (found == null) { //miss (add value to set; update counts)
-                //eviction policies (don't forget to check dirty blocks)
-                Slot newVal = new
+                Slot newVal = {(uint32_t) tag, true, false, index, index}; // fix this later bc idk what is going on here
+                bool add = set_append(set, newVal, num_blocks, eviction_type);
+                //eviction policies (don't forget to check dirty blocks) --> eviction checked in append, but not dirty
                 load_misses++;
             } else { //hit (update counts only)
                 load_hits++;
@@ -121,7 +126,6 @@ int main(int argc, char **argv) {
         } else if (status == 's') { //conditinal statements for store
             if (found == null) { //miss (add value to set; update counts)
                 if (store_miss == "write-allocate") {
-
                     //bring block into cache
                         //eviction policies (don't forget to check dirty blocks)
                     //modify value
@@ -130,12 +134,10 @@ int main(int argc, char **argv) {
                     store_misses++;
                 }
             } else { //hit (write through vs write back; update counts)
-                //do the write
-                
+                //do the write        
                 if (store_policy == "write-back") { //update counts and don't change cache
                     //set dirty block (if necessary)
                 }
-
                 store_hits++;
             }
         }
