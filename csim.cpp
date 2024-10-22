@@ -119,6 +119,9 @@ int main(int argc, char **argv) {
                 Slot newVal = {(uint32_t) tag, true, false, index, index}; // fix this later bc idk what is going on here
                 bool add = set_append(set, newVal, num_blocks, eviction_type);
                 //eviction policies (don't forget to check dirty blocks) --> eviction checked in append, but not dirty
+                if(newVal.dirty) {
+                    // load from main memory?
+                }
                 load_misses++;
             } else { //hit (update counts only)
                 load_hits++;
