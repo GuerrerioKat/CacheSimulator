@@ -157,6 +157,7 @@ uint32_t set_append(std::vector<Slot>& set, Slot newSlot, int& total_cycles, std
     uint32_t i = 0;
     for (std::vector<Slot>::iterator it = set.begin(); it != set.end(); ++it) {
         if (!it->valid) {
+            total_cycles += 100 * block_size / 4;
             *it = newSlot;
             return i;
         }
