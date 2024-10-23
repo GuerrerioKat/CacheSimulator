@@ -112,6 +112,9 @@ int main(int argc, char **argv) {
                 load_hits++;
             }
         } else if (status == 's') { //conditinal statements for store
+            if (store_miss == "no-write-allocate" && store_policy == "write-back") {
+                std::cerr << "You cannot do both no-write-allocate and write-back!" << std::endl;
+            }
             if (idx < 0) { //miss (add value to set; update counts)
                 if (store_miss == "write-allocate") {
                     //bring block into cache
