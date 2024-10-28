@@ -8,7 +8,6 @@
 
 int main(int argc, char **argv) {
     //SETTING UP USER ARGUMENTS
-
     if (argc != 7) {
         std::cerr << "Not enough arguements provided!" << std::endl;
         return 1;
